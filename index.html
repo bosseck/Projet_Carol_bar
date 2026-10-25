@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Comptoir La Terrasse — suivi des stocks du bar et de l'épicerie. Lots, bouteilles, caisse et bénéfice en FCFA."
+    />
+    <meta name="theme-color" content="#1c1712" />
+    <title>Comptoir — Stocks La Terrasse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,560;0,9..144,660;0,9..144,700;1,9..144,560&family=Outfit:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231c1712'/%3E%3Cpath d='M8 22V10h3.2c2 0 3.2 1 3.2 2.6 0 1.1-.6 1.9-1.5 2.3l1.8 4.1h-2l-1.6-3.8H10.2V22H8zm2-5.4h1.2c.9 0 1.4-.4 1.4-1.1S12.1 14.4 11.2 14.4H10V16.6z' fill='%23f3e2cc'/%3E%3Cpath d='M17 22V10h5.6v1.7h-3.6v2h3.2v1.6h-3.2v2.1h3.8V22H17z' fill='%23e3a45c'/%3E%3C/svg%3E"
+    />
+    <script>
+      try {
+        var t = localStorage.getItem("terrasse-theme");
+        var dark = t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+        if (dark) document.documentElement.classList.add("dark");
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
