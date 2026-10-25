@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { InspectorView } from "./InspectorView";
 import banner from "./assets/banner.jpg";
 import { CATEGORIES, CATEGORY_COLORS, PRODUCTS, categorySegment } from "./data/catalog";
 import { SEED_MOVEMENTS } from "./data/movements";
@@ -148,6 +149,14 @@ function sortValue(row: ProductRow, key: SortKey): string | number {
 }
 
 export default function App() {
+  const [view, setView] = useState<"inspector" | "admin">(() => {
+    if (typeof window === "undefined") return "inspector";
+    const h = window.location.hash;
+    if (h === "#admin" || h === "#/admin") return "admin";
+    const p = new URLSearchParams(window.location.search);
+    if (p.get("view") === "admin" || p.get("mode") === "admin") return "admin";
+    return "inspector";
+  });
   const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"));
   const [preset, setPreset] = useState<Preset>("30");
   const [customStart, setCustomStart] = useState(iso(addDays(TODAY, -29)));
@@ -618,6 +627,20 @@ export default function App() {
     { id: "all", label: "Tout" },
   ];
 
+  if (view === "inspector") {
+    return (
+      <InspectorView
+        onAdminAccess={() => {
+          setAuthReason("accéder à l'interface administrateur");
+          setView("admin");
+          try {
+            window.location.hash = "#admin";
+          } catch {}
+        }}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen">
       <a
@@ -643,6 +666,18 @@ export default function App() {
               aria-label={dark ? "Activer le mode clair" : "Activer le mode sombre"}
             >
               {dark ? "Clair" : "Sombre"}
+            </button>
+            <button
+              type="button"
+              className="btn btn-ghost btn-tiny"
+              onClick={() => {
+                setView("inspector");
+                try {
+                  window.location.hash = "";
+                } catch {}
+              }}
+            >
+              Vue consultation
             </button>
             {user ? (
               <>
@@ -1159,7 +1194,21 @@ export default function App() {
         </ConfirmDialog>
       ) : null}
 
-      {authReason ? <AuthDialog reason={authReason} onClose={closeAuth} onAuthed={handleAuthed} /> : null}
+      {authReason ? (
+        <AuthDialog
+          reason={authReason}
+          onClose={closeAuth}
+          onAuthed={(session) => {
+            handleAuthed(session);
+            if (view !== "admin") {
+              setView("admin");
+              try {
+                window.location.hash = "#admin";
+              } catch {}
+            }
+          }}
+        />
+      ) : null}
 
       {toast ? (
         <div
